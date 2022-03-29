@@ -8,12 +8,10 @@ const initial_tasks = [
   { id: 2, taskName: "groceries", isCompleted: false },
   { id: 3, taskName: "painting", isCompleted: false },
 ];
-const completedTasks = [];
 
 function App() {
   const [userInput, setuserInput] = useState("");
   const [displaylist, setDisplaylist] = useState(initial_tasks);
-  const activeTasks = displaylist;
 
   const handleInputChange = (event) => {
     console.log(event.target.value);
@@ -38,6 +36,7 @@ function App() {
   console.log(checked);
 
   const handleCheckBox = (event) => {
+    setChecked(!checked);
     console.log(event.target.value);
     console.log(displaylist);
     displaylist.map((t) =>
