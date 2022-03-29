@@ -18,6 +18,9 @@ body{
   align-items: center;
   
 }
+.strike {
+  text-decoration: line-through;
+}
 
 .filter-contents{
 margin:auto;
