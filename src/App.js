@@ -7,11 +7,25 @@ const initial_tasks = [
   { id: 1, taskName: "complete assignment", isCompleted: false },
   { id: 2, taskName: "groceries", isCompleted: false },
   { id: 3, taskName: "painting", isCompleted: false },
+  { id: 4, taskName: "jogging", isCompleted: true },
 ];
 
 function App() {
   const [userInput, setuserInput] = useState("");
   const [displaylist, setDisplaylist] = useState(initial_tasks);
+
+  const all = (t) => t;
+  console.log(all);
+  const active = (task) => task.isCompleted === false;
+  console.log(active);
+  const completed = (task) => task.isCompleted === true;
+  const [filter, setFilter] = useState(() => all);
+  console.log("filter", filter);
+  // const FILTER_MAP = {
+  //   All: (t) => t,
+  //   Active: (task) => task.isCompleted === false,
+  //   Completed: (task) => task.isCompleted === true,
+  // };
 
   const handleInputChange = (event) => {
     console.log(event.target.value);
@@ -23,7 +37,7 @@ function App() {
       alert("please input the task");
     } else {
       console.log("task is", userInput);
-      let afterAddTaskList = [
+      const afterAddTaskList = [
         ...displaylist,
         { id: displaylist.length + 1, taskName: userInput, isCompleted: false },
       ];
@@ -38,14 +52,16 @@ function App() {
   const handleCheckBox = (event) => {
     setChecked(!checked);
     console.log(event.target.value);
+
     console.log(displaylist);
     displaylist.map((t) =>
-      t.taskName === event.target.value
-        ? (t.isCompleted = true)
-        : (t.isCompleted = false)
+      t.taskName === event.target.value ? (t.isCompleted = true) : null
     );
+
+    console.log("after update", displaylist);
     setDisplaylist(displaylist);
   };
+
   return (
     <div>
       <AddTask
@@ -54,12 +70,15 @@ function App() {
         handlebuttonOnClick={handlebuttonOnClick}
       />
       <div>
-        <button>All</button>
-        <button>Active</button>
-
-        <button>Completed</button>
+        <button onClick={() => setFilter(() => all)} value="All">
+          All
+        </button>
+        <button onClick={() => setFilter(() => active)} value="Active">
+          Active
+        </button>
+        <button onClick={() => setFilter(() => completed)}>Completed</button>
       </div>
-      {displaylist.map((m) => (
+      {displaylist.filter(filter).map((m) => (
         <Todorow
           key={m.id}
           id={m.id}
@@ -69,6 +88,16 @@ function App() {
           checked={checked}
         />
       ))}
+      {/* {displaylist.map((m) => (
+        <Todorow
+          key={m.id}
+          id={m.id}
+          taskName={m.taskName}
+          isCompleted={m.isCompleted}
+          handleCheckBox={handleCheckBox}
+          checked={checked}
+        />
+      ))} */}
     </div>
   );
 }
